@@ -6,6 +6,7 @@ import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.dao.OrdenEncabezadoRepository
 import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.model.OrdenEncabezado
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -46,7 +47,14 @@ class OrdenEncabezadoBusiness: IOrdenEncabezadoBusiness {
     @Throws(BusinessException::class)
     override fun saveOrdenEncabezado(ordenEncabezado: OrdenEncabezado): OrdenEncabezado {
         try {
-
+            var sdf = SimpleDateFormat("yyyy-MM-dd")
+            var fecha:Date = sdf.parse(ordenEncabezado.fechaOrden)
+            var fecha2:Date = sdf.parse(ordenEncabezado.fechaEnvio)
+            if (fecha!!.after(fecha2)) {
+                throw BusinessException("La fecha de orden no puede ser menor a la fecha de envio")
+            }else if (fecha2!!.before(fecha)) {
+                throw BusinessException("La fecha de envio no puede ser mayor a la fecha de orden")
+            }
             if (ordenEncabezado.ordenId < 0)
                 throw BusinessException("ID de orden no válido")
             if (ordenEncabezado.empleadoId <= 0)
@@ -57,10 +65,14 @@ class OrdenEncabezadoBusiness: IOrdenEncabezadoBusiness {
                 throw BusinessException("ID de cliente menor o igual a 0 no válido")
             if (ordenEncabezado.clienteId.toString().length == 0)
                 throw BusinessException("ID de cliente no puede estar vacio")
-            if (ordenEncabezado.fechaOrden.length == 0)
-                throw BusinessException("Ingrese una fecha válida")
-            if (ordenEncabezado.fechaEnvio.length == 0)
-                throw BusinessException("Ingrese una fecha de envio válida")
+            if (ordenEncabezado.fechaOrden!!.compareTo(ordenEncabezado.fechaEnvio)>0)
+                throw BusinessException("La fecha de orden no puede ser mayor a la fecha de envio")
+            if (ordenEncabezado.fechaOrden.toString().length == 0)
+                throw BusinessException("La fecha de orden no puede estar vacia")
+            if (ordenEncabezado.fechaEnvio!!.compareTo(ordenEncabezado.fechaOrden)<0)
+                throw BusinessException("La fecha de envio no puede ser menor a la fecha de orden")
+            if (ordenEncabezado.fechaEnvio.toString().length == 0)
+                throw BusinessException("La fecha de recepcion no puede estar vacia")
             if (ordenEncabezado.direccionEnvio.length == 0)
                 throw BusinessException("Ingrese un direccion válida")
             if (ordenEncabezado.estado.length == 0)
@@ -133,8 +145,17 @@ class OrdenEncabezadoBusiness: IOrdenEncabezadoBusiness {
     @Throws(BusinessException::class, NotFoundException::class)
     override fun updateOrdenEncabezado(ordenEncabezado: OrdenEncabezado): OrdenEncabezado {
         val opt:Optional<OrdenEncabezado>
-
         try{
+            var sdf = SimpleDateFormat("yyyy-MM-dd")
+            var fecha:Date = sdf.parse(ordenEncabezado.fechaOrden)
+            var fecha2:Date = sdf.parse(ordenEncabezado.fechaEnvio)
+            if (fecha!!.after(fecha2)) {
+                throw BusinessException("La fecha de orden no puede ser menor a la fecha de envio")
+            }else if (fecha2!!.before(fecha)) {
+                throw BusinessException("La fecha de envio no puede ser mayor a la fecha de orden")
+            }
+            if (ordenEncabezado.ordenId < 0)
+                throw BusinessException("ID de orden no válido")
             if (ordenEncabezado.empleadoId <= 0)
                 throw BusinessException("ID de empleado menor o igual a 0 no válido")
             if (ordenEncabezado.empleadoId.toString().length == 0)
@@ -143,10 +164,14 @@ class OrdenEncabezadoBusiness: IOrdenEncabezadoBusiness {
                 throw BusinessException("ID de cliente menor o igual a 0 no válido")
             if (ordenEncabezado.clienteId.toString().length == 0)
                 throw BusinessException("ID de cliente no puede estar vacio")
-            if (ordenEncabezado.fechaOrden.length == 0)
-                throw BusinessException("Ingrese una fecha válida")
-            if (ordenEncabezado.fechaEnvio.length == 0)
-                throw BusinessException("Ingrese una fecha de envio válida")
+            if (ordenEncabezado.fechaOrden!!.compareTo(ordenEncabezado.fechaEnvio)>0)
+                throw BusinessException("La fecha de orden no puede ser mayor a la fecha de envio")
+            if (ordenEncabezado.fechaOrden.toString().length == 0)
+                throw BusinessException("La fecha de orden no puede estar vacia")
+            if (ordenEncabezado.fechaEnvio!!.compareTo(ordenEncabezado.fechaOrden)<0)
+                throw BusinessException("La fecha de envio no puede ser menor a la fecha de orden")
+            if (ordenEncabezado.fechaEnvio.toString().length == 0)
+                throw BusinessException("La fecha de recepcion no puede estar vacia")
             if (ordenEncabezado.direccionEnvio.length == 0)
                 throw BusinessException("Ingrese un direccion válida")
             if (ordenEncabezado.estado.length == 0)
@@ -155,7 +180,6 @@ class OrdenEncabezadoBusiness: IOrdenEncabezadoBusiness {
                 throw BusinessException("Valor total menor o igual a 0 no válido")
             if (ordenEncabezado.total.toString().length == 0)
                 throw BusinessException("Valor total no puede estar vacio")
-
             opt = ordenEncabezadoRepository!!.findById(ordenEncabezado.ordenId)
         }catch (e:Exception){
             throw BusinessException(e.message)

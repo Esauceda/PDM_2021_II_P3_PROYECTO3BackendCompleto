@@ -6,9 +6,11 @@ import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.dao.EmpleadoRepository
 import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.model.Empleado
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Service
+
 class EmpleadoBusiness: IEmpleadoBusiness {
 
     @Autowired
@@ -40,6 +42,14 @@ class EmpleadoBusiness: IEmpleadoBusiness {
     @Throws(BusinessException::class)
     override fun saveEmpleado(empleado: Empleado): Empleado {
         try {
+            var sdf = SimpleDateFormat("yyyy-MM-dd")
+            var fecha:Date = sdf.parse(empleado.fechaContratacion)
+            var fecha2:Date = sdf.parse(empleado.fechaNacimiento)
+            if (fecha!!.before(fecha2)) {
+                throw BusinessException("La fecha de contratacion no puede ser menor a la fecha de nacimiento")
+            }else if (fecha2!!.after(fecha)) {
+                throw BusinessException("La fecha de nacimeinto no puede ser mayor a la fecha de contratacion")
+            }
             if (empleado.empleadoId < 0){
                 throw BusinessException("El id que ingreso no es valido")
             }else if (empleado.nombre.length == 0){
@@ -56,10 +66,10 @@ class EmpleadoBusiness: IEmpleadoBusiness {
                 throw BusinessException("El salario no puede estar vacio")
             }else if (empleado.puesto.length == 0){
                 throw BusinessException("El puesto no puede estar vacio")
+            }else if (empleado.fechaContratacion.length == 0){
+                throw BusinessException("La fecha de contratacion no puede estar vacio")
             }else if (empleado.fechaNacimiento.length == 0){
                 throw BusinessException("La fecha de nacimiento no puede estar vacio")
-            }else if (empleado.fechaContratacion.length == 0){
-                throw BusinessException("La fecha de contratacion no puede estar vacia")
             }else if (empleado.contrasena.length == 0){
                 throw BusinessException("La contrasena no puede estar vacia")
             }
@@ -121,6 +131,18 @@ class EmpleadoBusiness: IEmpleadoBusiness {
     @Throws(BusinessException::class, NotFoundException::class)
     override fun updateEmpleado(empleado: Empleado): Empleado {
         val opt: Optional<Empleado>
+        var sdf = SimpleDateFormat("yyyy-MM-dd")
+        try {
+            var fecha:Date = sdf.parse(empleado.fechaContratacion)
+            var fecha2:Date = sdf.parse(empleado.fechaNacimiento)
+            if (fecha!!.compareTo(fecha2)<0) {
+                throw BusinessException("La fecha de contratacion no puede ser menor a la fecha de nacimiento")
+            }else if (fecha2!!.compareTo(fecha)>0) {
+                throw BusinessException("La fecha de nacimeinto no puede ser mayor a la fecha de contratacion")
+            }
+        } catch (e:Exception) {
+            throw BusinessException("Error en el parseo de fecha")
+        }
         try{
             if (empleado.nombre.length == 0){
                 throw BusinessException("El nombre no puede estar vacio")
@@ -136,12 +158,12 @@ class EmpleadoBusiness: IEmpleadoBusiness {
                 throw BusinessException("El salario no puede estar vacio")
             }else if (empleado.puesto.length == 0){
                 throw BusinessException("El puesto no puede estar vacio")
-            }else if (empleado.fechaNacimiento.length == 0){
-                throw BusinessException("La fecha de nacimiento no puede estar vacio")
-            }else if (empleado.fechaContratacion.length == 0){
-                throw BusinessException("La fecha de contratacion no puede estar vacia")
             }else if (empleado.contrasena.length == 0){
                 throw BusinessException("La contrasena no puede estar vacia")
+            }else if (empleado.fechaContratacion.length == 0){
+                throw BusinessException("La fecha de contratacion no puede estar vacio")
+            }else if (empleado.fechaNacimiento.length == 0) {
+                throw BusinessException("La fecha de nacimiento no puede estar vacio")
             }
             opt = empleadoRepository!!.findById(empleado.empleadoId)
         }catch (e:Exception){
@@ -158,4 +180,6 @@ class EmpleadoBusiness: IEmpleadoBusiness {
             }
         }
     }
+
+
 }

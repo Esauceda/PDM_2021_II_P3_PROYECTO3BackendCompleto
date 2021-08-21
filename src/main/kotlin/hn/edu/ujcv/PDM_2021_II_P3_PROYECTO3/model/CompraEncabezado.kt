@@ -1,10 +1,11 @@
 package hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.model
 
+import java.util.*
 import javax.persistence.*
 
 @Entity
 @Table(name = "compra_encabezado")
-data class CompraEncabezado(val proveedorId:Long = 0, val empleadoId:Long = 0, val fechaCompra:String = "", val total:Double = 0.0,
+data class CompraEncabezado(val proveedorId:Long = 0, val empleadoId:Long = 0, val fechaCompra:String ="", val total:Double = 0.0,
                             val estado:String = "", val fechaRecepcion: String = ""){
 
     @Id

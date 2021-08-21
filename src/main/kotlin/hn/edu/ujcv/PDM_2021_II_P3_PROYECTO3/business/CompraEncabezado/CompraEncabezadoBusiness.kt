@@ -6,6 +6,7 @@ import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.dao.CompraEncabezadoRepository
 import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.model.CompraEncabezado
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Service
@@ -40,6 +41,14 @@ class CompraEncabezadoBusiness: ICompraEncabezadoBusiness {
     @Throws(BusinessException::class)
     override fun saveCompraEncabezado(compraEncabezado: CompraEncabezado): CompraEncabezado {
         try {
+            var sdf = SimpleDateFormat("yyyy-MM-dd")
+            var fecha:Date = sdf.parse(compraEncabezado.fechaCompra)
+            var fecha2:Date = sdf.parse(compraEncabezado.fechaRecepcion)
+            if (fecha2!!.before(fecha)) {
+                throw BusinessException("La fecha de recepcion no puede ser menor a la fecha de compra")
+            }else if (fecha!!.after(fecha2)) {
+                throw BusinessException("La fecha de compra no puede ser mayor a la fecha de recepcion")
+            }
             if (compraEncabezado.compraId<0){
                 throw BusinessException("El id de la compra encabezado no puede estar vacio")
             }
@@ -55,8 +64,17 @@ class CompraEncabezadoBusiness: ICompraEncabezadoBusiness {
             if (compraEncabezado.empleadoId.toString().length == 0){
                 throw BusinessException("El id del empleado no puede estar vacio")
             }
-            if (compraEncabezado.fechaCompra.length == 0){
-                throw BusinessException("La fecha de la compra encabezado no puede estar vacio")
+            if (compraEncabezado.fechaCompra!!.compareTo(compraEncabezado.fechaRecepcion)>0) {
+                throw BusinessException("La fecha de compra no puede ser mayor a la fecha de recepcion")
+            }
+            if (compraEncabezado.fechaCompra.toString().length == 0) {
+                throw BusinessException("La fecha de compra no puede estar vacia")
+            }
+            if (compraEncabezado.fechaRecepcion!!.compareTo(compraEncabezado.fechaCompra)<0) {
+                throw BusinessException("La fecha de recepcion no puede ser menor a la fecha de compra")
+            }
+            if (compraEncabezado.fechaRecepcion.toString().length == 0) {
+                throw BusinessException("La fecha de recepcion no puede estar vacia")
             }
             if (compraEncabezado.total<=0){
                 throw BusinessException("El total de la compra encabezado no puede estar vacio")
@@ -66,9 +84,6 @@ class CompraEncabezadoBusiness: ICompraEncabezadoBusiness {
             }
             if (compraEncabezado.estado.length == 0){
                 throw BusinessException("El estado de la compra encabezado no puede estar vacio")
-            }
-            if (compraEncabezado.fechaRecepcion.length == 0){
-                throw BusinessException("La fecha de la recepcion encabezado no puede estar vacio")
             }
             return compraEncabezadoRepository!!.save(compraEncabezado)
         }catch (e:Exception){
@@ -109,6 +124,14 @@ class CompraEncabezadoBusiness: ICompraEncabezadoBusiness {
     override fun updateCompraEncabezado(compraEncabezado: CompraEncabezado): CompraEncabezado{
         val opt: Optional<CompraEncabezado>
         try{
+            var sdf = SimpleDateFormat("yyyy-MM-dd")
+            var fecha:Date = sdf.parse(compraEncabezado.fechaCompra)
+            var fecha2:Date = sdf.parse(compraEncabezado.fechaRecepcion)
+            if (fecha!!.before(fecha2)) {
+                throw BusinessException("La fecha de recepcion no puede ser menor a la fecha de compra")
+            }else if (fecha2!!.after(fecha)) {
+                throw BusinessException("La fecha de compra no puede ser mayor a la fecha de recepcion")
+            }
             if (compraEncabezado.proveedorId<=0){
                 throw BusinessException("El id del proveedor no puede estar vacio")
             }
@@ -121,8 +144,17 @@ class CompraEncabezadoBusiness: ICompraEncabezadoBusiness {
             if (compraEncabezado.empleadoId.toString().length == 0){
                 throw BusinessException("El id del empleado no puede estar vacio")
             }
-            if (compraEncabezado.fechaCompra.length == 0){
-                throw BusinessException("La fecha de la compra encabezado no puede estar vacio")
+            if (compraEncabezado.fechaCompra!!.compareTo(compraEncabezado.fechaRecepcion)>0) {
+                throw BusinessException("La fecha de compra no puede ser mayor a la fecha de recepcion")
+            }
+            if (compraEncabezado.fechaCompra.toString().length == 0) {
+                throw BusinessException("La fecha de compra no puede estar vacia")
+            }
+            if (compraEncabezado.fechaRecepcion!!.compareTo(compraEncabezado.fechaCompra)<0) {
+                throw BusinessException("La fecha de recepcion no puede ser menor a la fecha de compra")
+            }
+            if (compraEncabezado.fechaRecepcion.toString().length == 0) {
+                throw BusinessException("La fecha de recepcion no puede estar vacia")
             }
             if (compraEncabezado.total<=0){
                 throw BusinessException("El total de la compra encabezado no puede estar vacio")
@@ -132,9 +164,6 @@ class CompraEncabezadoBusiness: ICompraEncabezadoBusiness {
             }
             if (compraEncabezado.estado.length == 0){
                 throw BusinessException("El estado de la compra encabezado no puede estar vacio")
-            }
-            if (compraEncabezado.fechaRecepcion.length == 0){
-                throw BusinessException("La fecha de la recepcion encabezado no puede estar vacio")
             }
             opt = compraEncabezadoRepository!!.findById(compraEncabezado.compraId)
         }catch (e:Exception){

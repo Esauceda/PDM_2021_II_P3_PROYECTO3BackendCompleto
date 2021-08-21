@@ -57,7 +57,7 @@ class MaquinariaController {
         return try {
             maquinariaBusiness!!.saveMaquinaria(maquinaria)
             val responseHeader = HttpHeaders()
-            responseHeader.set("location",Constants.URL_BASE_MAQUINARIA+"/"+maquinaria.maquinariaId)
+            responseHeader.set("location",Constants.URL_BASE_MAQUINARIA+"/"+maquinaria.maquinaId)
             ResponseEntity(maquinaria, responseHeader, HttpStatus.CREATED)
         }catch (e:BusinessException){
             //return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)

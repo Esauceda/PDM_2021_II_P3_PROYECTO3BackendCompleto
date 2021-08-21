@@ -47,7 +47,7 @@ class MaquinariaBusiness: IMaquinariaBusiness {
     @Throws(BusinessException::class)
     override fun saveMaquinaria(maquinaria: Maquinaria): Maquinaria {
         try {
-            if (maquinaria.maquinariaId < 0)
+            if (maquinaria.maquinaId < 0)
                 throw BusinessException("El Id de la maquinaria no puede ser menor o igual a 0")
             if (maquinaria.fabricaId <= 0)
                 throw BusinessException("El Id de la fabrica no puede ser menor o igual a 0")
@@ -134,16 +134,18 @@ class MaquinariaBusiness: IMaquinariaBusiness {
                 throw BusinessException("La horas de uso no pueden estar vacias")
             if (maquinaria.tipoMaquina.length == 0)
                 throw BusinessException("El tipo de maquinaria esta vacia")
-            opt = maquinariaRepository!!.findById(maquinaria.maquinariaId)
+
+            opt = maquinariaRepository!!.findById(maquinaria.maquinaId)
         }catch (e:Exception){
             throw BusinessException(e.message)
         }
         if (!opt.isPresent){
-            throw NotFoundException("No se encontro la maquinaria ${maquinaria.maquinariaId}")
+            throw NotFoundException("No se encontro la maquinaria ${maquinaria.maquinaId}")
         }
         else{
             try {
-                return maquinariaRepository!!.save(maquinaria)
+                    return maquinariaRepository!!.save(maquinaria)
+
             }catch (e:Exception){
                 throw BusinessException(e.message)
             }

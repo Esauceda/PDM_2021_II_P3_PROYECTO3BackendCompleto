@@ -7,5 +7,5 @@ import javax.persistence.*
 data class Maquinaria(val fabricaId:Long = 0, val marca:String = "", val horasUso:Double = 0.0, val tipoMaquina:String = ""){
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var maquinariaId:Long = 0
+    var maquinaId:Long = 0
 }

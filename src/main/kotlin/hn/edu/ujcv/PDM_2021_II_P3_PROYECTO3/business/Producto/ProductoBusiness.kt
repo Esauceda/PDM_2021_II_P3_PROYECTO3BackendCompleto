@@ -56,7 +56,7 @@ class ProductoBusiness: IProductoBusiness {
                 throw BusinessException("Las unidades en almacen no pueden estar vacias")
             }else if  (producto.unidadesEnAlmacen > producto.unidadesMaximas) {
                 throw BusinessException("Las unidades en almacen no pueden ser mayor a las unidades maximas")
-            }else if  (producto.unidadesEnAlmacen > producto.unidadesMinimas) {
+            }else if  (producto.unidadesEnAlmacen < producto.unidadesMinimas) {
                 throw BusinessException("Las unidades en almacen no pueden ser menor a las unidades minimas")
             }else if (producto.unidadesEnAlmacen.toString().length > 8) {
                 throw BusinessException("Las unidades en almacen no pueden ser mayor a 8 digitos")

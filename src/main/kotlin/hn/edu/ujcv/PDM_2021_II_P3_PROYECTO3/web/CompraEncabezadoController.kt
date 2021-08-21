@@ -18,7 +18,7 @@ class CompraEncabezadoController {
     @Autowired
     val compraEncabezadoBusiness: ICompraEncabezadoBusiness? = null
 
-
+    @GetMapping("")
     fun list(): ResponseEntity<List<CompraEncabezado>> {
         return try {
             ResponseEntity(compraEncabezadoBusiness!!.getComprasEncabezado(), HttpStatus.OK)
