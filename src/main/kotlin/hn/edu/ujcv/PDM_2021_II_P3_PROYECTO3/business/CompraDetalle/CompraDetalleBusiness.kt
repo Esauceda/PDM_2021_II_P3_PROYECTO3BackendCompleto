@@ -42,7 +42,7 @@ class CompraDetalleBusiness: ICompraDetalleBusiness {
     @Throws(BusinessException::class)
     override fun saveCompraDetalle(compraDetalle: CompraDetalle): CompraDetalle {
         try {
-            if (compraDetalle.compraId<0) {
+            if (compraDetalle.compraDetalleId<0) {
                 throw BusinessException("El id de la compra detalle no puede estar vacio")
             }
             if (compraDetalle.producto.length == 0) {
@@ -94,6 +94,15 @@ class CompraDetalleBusiness: ICompraDetalleBusiness {
             }
         }
     }
+    @Throws(BusinessException::class)
+    override fun getComprasDetalleByCompraId(compraId: Long): List<CompraDetalle> {
+        try {
+            return compraDetalleRepository!!.findAll();
+        }catch (e:Exception){
+            throw BusinessException(e.message)
+        }
+    }
+
     @Throws(BusinessException::class, NotFoundException::class)
     override fun updateCompraDetalle(compraDetalle: CompraDetalle): CompraDetalle {
         val opt: Optional<CompraDetalle>
@@ -113,12 +122,12 @@ class CompraDetalleBusiness: ICompraDetalleBusiness {
             if (compraDetalle.precio.toString().length == 0) {
                 throw BusinessException("El precio de la compra detalle no puede estar vacio")
             }
-            opt = compraDetalleRepository!!.findById(compraDetalle.compraId)
+            opt = compraDetalleRepository!!.findById(compraDetalle.compraDetalleId)
         }catch (e:Exception){
             throw BusinessException(e.message)
         }
         if (!opt.isPresent){
-            throw NotFoundException("No se encontro la compra detalle ${compraDetalle.compraId}")
+            throw NotFoundException("No se encontro la compra detalle ${compraDetalle.compraDetalleId}")
         }
         else{
             try {

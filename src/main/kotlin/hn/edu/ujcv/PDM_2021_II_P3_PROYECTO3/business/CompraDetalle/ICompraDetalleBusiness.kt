@@ -8,5 +8,6 @@ interface ICompraDetalleBusiness {
     fun saveCompraDetalle(compraDetalle: CompraDetalle): CompraDetalle
     fun saveComprasDetalle(comprasDetalle:List<CompraDetalle>): List<CompraDetalle>
     fun removeCompraDetalle(idCompraDetalle: Long)
+    fun getComprasDetalleByCompraId(compraId: Long): List<CompraDetalle>
     fun updateCompraDetalle(compraDetalle: CompraDetalle): CompraDetalle
 }

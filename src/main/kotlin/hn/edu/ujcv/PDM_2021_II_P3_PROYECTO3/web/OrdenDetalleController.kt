@@ -39,15 +39,13 @@ class OrdenDetalleController {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
-    //GETBYPRODUCTOID
-    @GetMapping("/productoId/{productoId}")
-    fun loadByProductoId(@PathVariable("productoId") productoId:Long):ResponseEntity<OrdenDetalle>{
+    //GETORDENDETALLEBYORDENID
+    @GetMapping("/ordenId/{ordenId}")
+    fun listByOrdenId(@PathVariable("ordenId") ordenId: Long ): ResponseEntity<List<OrdenDetalle>>{
         return try {
-            ResponseEntity(ordenDetalleBusiness!!.getOrdenDetalleByProductoId(productoId), HttpStatus.OK)
-        }catch (e:BusinessException){
+            ResponseEntity(ordenDetalleBusiness!!.getOrdenesDetalle(), HttpStatus.OK)
+        }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
-        }catch (e:NotFoundException){
-            ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
 
@@ -57,7 +55,7 @@ class OrdenDetalleController {
         return try {
             ordenDetalleBusiness!!.saveOrdenDetalle(ordenDetalle)
             val responseHeader = HttpHeaders()
-            responseHeader.set("location",Constants.URL_BASE_ORDENEDETALLE+"/"+ordenDetalle.ordenId)
+            responseHeader.set("location",Constants.URL_BASE_ORDENEDETALLE+"/"+ordenDetalle.ordenDetalleId)
             ResponseEntity(ordenDetalle, responseHeader, HttpStatus.CREATED)
         }catch (e:BusinessException){
             //return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)

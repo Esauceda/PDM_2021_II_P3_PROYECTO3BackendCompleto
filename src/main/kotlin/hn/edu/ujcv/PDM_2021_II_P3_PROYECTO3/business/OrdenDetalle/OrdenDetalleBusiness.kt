@@ -2,7 +2,6 @@ package hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.business.OrdenDetalle
 
 import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.BusinessException
 import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.NotFoundException
-import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.business.OrdenDetalle.IOrdenDetalleBusiness
 import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.dao.OrdenDetalleRepository
 import hn.edu.ujcv.PDM_2021_II_P3_PROYECTO3.model.OrdenDetalle
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,7 +44,7 @@ class OrdenDetalleBusiness: IOrdenDetalleBusiness {
     @Throws(BusinessException::class)
     override fun saveOrdenDetalle(ordenDetalle: OrdenDetalle): OrdenDetalle {
         try {
-            if (ordenDetalle.ordenId < 0)
+            if (ordenDetalle.ordenDetalleId < 0)
                 throw BusinessException("Ingrese id de orden detalle valido")
             if (ordenDetalle.almacenId < 0)
                 throw BusinessException("Ingrese id de almacen valido")
@@ -103,20 +102,16 @@ class OrdenDetalleBusiness: IOrdenDetalleBusiness {
         }
     }
 
-    //GETBYPRODUCTOID
-    @Throws(BusinessException::class, NotFoundException::class)
-    override fun getOrdenDetalleByProductoId(productoIdOrden: Long): OrdenDetalle {
-        val opt:Optional<OrdenDetalle>
+    //GetOrdenesByOrdenId
+    @Throws(BusinessException::class)
+    override fun getOrdenDetalleByOrdenId(ordenId: Long): List<OrdenDetalle> {
         try {
-            opt = ordenDetalleRepository!!.findByProductoId(productoIdOrden)
-        }catch (e:Exception){
+            return ordenDetalleRepository!!.findAll()
+        }catch (e: Exception){
             throw BusinessException(e.message)
         }
-        if (!opt.isPresent){
-            throw NotFoundException("No se encontro el orden detalle con productoId $productoIdOrden")
-        }
-        return opt.get()
     }
+
 
     //UPDATE
     @Throws(BusinessException::class, NotFoundException::class)
@@ -140,12 +135,12 @@ class OrdenDetalleBusiness: IOrdenDetalleBusiness {
             if (ordenDetalle.precio.toString().length == 0)
                 throw BusinessException("El precio no puede estar vacio")
 
-            opt = ordenDetalleRepository!!.findById(ordenDetalle.ordenId)
+            opt = ordenDetalleRepository!!.findById(ordenDetalle.ordenDetalleId)
         }catch (e:Exception){
             throw BusinessException(e.message)
         }
         if (!opt.isPresent){
-            throw NotFoundException("No se encontro el orden detalle ${ordenDetalle.ordenId}")
+            throw NotFoundException("No se encontro el orden detalle ${ordenDetalle.ordenDetalleId}")
         }
         else{
             try {

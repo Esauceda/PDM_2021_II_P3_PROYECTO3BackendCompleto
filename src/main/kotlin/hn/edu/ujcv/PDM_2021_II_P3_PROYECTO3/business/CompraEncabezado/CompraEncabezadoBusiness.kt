@@ -144,14 +144,8 @@ class CompraEncabezadoBusiness: ICompraEncabezadoBusiness {
             if (compraEncabezado.empleadoId.toString().length == 0){
                 throw BusinessException("El id del empleado no puede estar vacio")
             }
-            if (compraEncabezado.fechaCompra!!.compareTo(compraEncabezado.fechaRecepcion)>0) {
-                throw BusinessException("La fecha de compra no puede ser mayor a la fecha de recepcion")
-            }
             if (compraEncabezado.fechaCompra.toString().length == 0) {
                 throw BusinessException("La fecha de compra no puede estar vacia")
-            }
-            if (compraEncabezado.fechaRecepcion!!.compareTo(compraEncabezado.fechaCompra)<0) {
-                throw BusinessException("La fecha de recepcion no puede ser menor a la fecha de compra")
             }
             if (compraEncabezado.fechaRecepcion.toString().length == 0) {
                 throw BusinessException("La fecha de recepcion no puede estar vacia")

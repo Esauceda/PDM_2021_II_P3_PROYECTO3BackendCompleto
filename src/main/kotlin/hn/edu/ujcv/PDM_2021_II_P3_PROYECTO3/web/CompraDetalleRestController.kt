@@ -28,6 +28,15 @@ class CompraDetalleRestController {
             }
         }
 
+        @GetMapping("/compraId/{compraId}")
+        fun listByCompraID(@PathVariable("compraId") compraId: Long): ResponseEntity<List<CompraDetalle>> {
+            return try {
+                ResponseEntity(compraDetBusiness!!.getComprasDetalle(), HttpStatus.OK)
+            } catch (e: Exception) {
+                ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+        }
+
         @GetMapping("/id/{id}")
         fun loadById(@PathVariable("id") idCompraDet: Long): ResponseEntity<CompraDetalle> {
             return try {
@@ -44,7 +53,7 @@ class CompraDetalleRestController {
             return try {
                 compraDetBusiness!!.saveCompraDetalle(compraDetalle)
                 val responseHeader = HttpHeaders()
-                responseHeader.set("location", Constants.URL_BASE_COMPRADETALLE + "/" + compraDetalle.compraId)
+                responseHeader.set("location", Constants.URL_BASE_COMPRADETALLE + "/" + compraDetalle.compraDetalleId)
                 ResponseEntity(compraDetalle, responseHeader, HttpStatus.CREATED)
             } catch (e: BusinessException) {
                 val apiError = RestApiError(HttpStatus.INTERNAL_SERVER_ERROR,
