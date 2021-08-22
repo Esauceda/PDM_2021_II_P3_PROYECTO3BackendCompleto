@@ -44,11 +44,12 @@ class OrdenDetalleController {
     @GetMapping("/ordenId/{ordenId}")
     fun listByOrdenId(@PathVariable("ordenId") ordenId: Long ): ResponseEntity<List<OrdenDetalle>>{
         return try {
-            ResponseEntity(ordenDetalleBusiness!!.getOrdenesDetalle(), HttpStatus.OK)
+            ResponseEntity(ordenDetalleBusiness!!.getOrdenDetalleByOrdenId(ordenId), HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
+
 
     //ADD
     @PostMapping("/addOrdenDetalle")

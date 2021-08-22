@@ -94,10 +94,11 @@ class CompraDetalleBusiness: ICompraDetalleBusiness {
             }
         }
     }
+
     @Throws(BusinessException::class)
     override fun getComprasDetalleByCompraId(compraId: Long): List<CompraDetalle> {
         try {
-            return compraDetalleRepository!!.findAll();
+            return compraDetalleRepository!!.findByCompraId(compraId);
         }catch (e:Exception){
             throw BusinessException(e.message)
         }

@@ -104,9 +104,9 @@ class OrdenDetalleBusiness: IOrdenDetalleBusiness {
 
     //GetOrdenesByOrdenId
     @Throws(BusinessException::class)
-    override fun getOrdenDetalleByOrdenId(ordenId: Long): List<OrdenDetalle> {
+    override fun getOrdenDetalleByOrdenId(ordenId: Long):List<OrdenDetalle> {
         try {
-            return ordenDetalleRepository!!.findAll()
+            return ordenDetalleRepository!!.findByOrdenId(ordenId)
         }catch (e: Exception){
             throw BusinessException(e.message)
         }

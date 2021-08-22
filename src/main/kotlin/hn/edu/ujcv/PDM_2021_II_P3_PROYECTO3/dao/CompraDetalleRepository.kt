@@ -8,5 +8,5 @@ import java.util.*
 
 @Repository
 interface CompraDetalleRepository: JpaRepository<CompraDetalle,Long> {
-    fun findByCompraId(compraId : Int): Optional<List<CompraDetalle>>
+    fun findByCompraId(compraId : Long): List<CompraDetalle>
 }

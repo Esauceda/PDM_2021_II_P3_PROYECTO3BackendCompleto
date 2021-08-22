@@ -31,7 +31,7 @@ class CompraDetalleRestController {
         @GetMapping("/compraId/{compraId}")
         fun listByCompraID(@PathVariable("compraId") compraId: Long): ResponseEntity<List<CompraDetalle>> {
             return try {
-                ResponseEntity(compraDetBusiness!!.getComprasDetalle(), HttpStatus.OK)
+                ResponseEntity(compraDetBusiness!!.getComprasDetalleByCompraId(compraId), HttpStatus.OK)
             } catch (e: Exception) {
                 ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
             }

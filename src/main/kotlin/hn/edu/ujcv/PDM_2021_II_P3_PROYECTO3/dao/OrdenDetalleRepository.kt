@@ -7,5 +7,5 @@ import java.util.*
 
 @Repository
 interface OrdenDetalleRepository:JpaRepository<OrdenDetalle,Long> {
-    fun findByOrdenId(ordenId:Long):Optional<List<OrdenDetalle>>
+    fun findByOrdenId(ordenId:Long):List<OrdenDetalle>
 }
