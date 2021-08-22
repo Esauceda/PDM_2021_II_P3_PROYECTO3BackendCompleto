@@ -39,6 +39,7 @@ class OrdenDetalleController {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
+
     //GETORDENDETALLEBYORDENID
     @GetMapping("/ordenId/{ordenId}")
     fun listByOrdenId(@PathVariable("ordenId") ordenId: Long ): ResponseEntity<List<OrdenDetalle>>{
